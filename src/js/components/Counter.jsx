@@ -5,6 +5,7 @@ import { faClock } from '@fortawesome/free-regular-svg-icons'
 export const SecondsCounter = () => {
     const [count, setCount] = useState(0);
     const [stopCount, setStopCount] = useState(false);
+    const [fromNumber, setFromNumber] = useState('');
 
     useEffect(() => {
 
@@ -14,10 +15,29 @@ export const SecondsCounter = () => {
         }, 1000);
 
         return () => clearInterval(interval); 
-    }
-    }, [count, stopCount]); 
+        }
 
-    return (
+        if (fromNumber) {
+            const interval = setInterval(() => {
+                setCount((fromNumber) => fromNumber + 1);
+            }, 1000);
+
+            return () => clearInterval(interval);   
+            }   
+
+    }, [count, stopCount, fromNumber]); 
+
+    
+        const handleSubmit = (event) => {
+            event.preventDefault();
+            setCount(Number(fromNumber)); 
+        };
+        const handleChange = (event) => {
+        setFromNumber(Number(event.target.value));
+        return 
+        }
+
+   return (
 
         <div className="container-fluid ">
             <div className="bg-dark p-5 mt-1 text-bg-dark fw-bold">
@@ -34,8 +54,18 @@ export const SecondsCounter = () => {
                 </div>
             </div>
             <div className="text-center">
-                <button className="btn btn-success mt-4" onClick={()=>setStopCount(!stopCount)}>{stopCount ? "Restart" : "Stop"}</button>
-            </div>
+                <button className="btn btn-success m-4" onClick={()=>setStopCount(!stopCount)}>{stopCount ? "Restart counter" : "Stop counter"}</button>
+
+            <form onSubmit={handleSubmit}>
+<label>
+Set a start number:<br />
+<input type="number" style= {{width: `8ch`}} value={fromNumber} onChange={handleChange} />
+</label>
+<br /><br />
+<button className="btn btn-success" type="submit">Submit</button>
+</form>
+</div>
     </div>
     );
 };
+
