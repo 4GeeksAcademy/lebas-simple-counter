@@ -6,6 +6,7 @@ export const SecondsCounter = () => {
     const [count, setCount] = useState(0);
     const [stopCount, setStopCount] = useState(false);
     const [fromNumber, setFromNumber] = useState('');
+    const [valueTime, setValueTime] = useState(null);
 
     useEffect(() => {
 
@@ -33,9 +34,22 @@ export const SecondsCounter = () => {
             setCount(Number(fromNumber)); 
         };
         const handleChange = (event) => {
-        setFromNumber(Number(event.target.value));
+        setFromNumber((event.target.value));
         return 
         }
+
+        const handleTime = (event) => {
+            event.preventDefault();
+        };
+
+        const handleChangeTimer = (event) => {
+            event.preventDefault();
+            setTimeout(() => {
+                alert("Time is up!");
+            }, Number(valueTime) * 1000);
+        };
+
+ 
 
    return (
 
@@ -55,16 +69,30 @@ export const SecondsCounter = () => {
             </div>
             <div className="text-center">
                 <button className="btn btn-success m-4" onClick={()=>setStopCount(!stopCount)}>{stopCount ? "Restart counter" : "Stop counter"}</button>
-
-            <form onSubmit={handleSubmit}>
-<label>
-Set a start number:<br />
-<input type="number" style= {{width: `8ch`}} value={fromNumber} onChange={handleChange} />
-</label>
-<br /><br />
-<button className="btn btn-success" type="submit">Submit</button>
-</form>
-</div>
+            <div className="row">
+                <div className="col-6">
+                <form onSubmit={handleSubmit}>
+                <label>
+                Set a start number:<br />
+                <input type="number" style= {{width: `8ch`}} value={fromNumber} onChange={handleChange} />
+                </label>
+                <br /><br />
+                <button className="btn btn-success" type="submit">Submit</button>
+                </form>
+                </div>
+                <div className="col-6">
+                
+                <form onSubmit={handleChangeTimer}>
+                <label>
+                Set a timer alert (in seconds):<br />
+                <input type="number" style= {{width: `8ch`}} value={valueTime}  onChange={(e) => setValueTime(e.target.value)}/>
+                </label>
+                <br /><br />
+                <button className="btn btn-success" type="submit" onClick={()=>setValueTime(valueTime)}>Submit</button>
+                </form>
+                </div>
+                </div>
+            </div>
     </div>
     );
 };
